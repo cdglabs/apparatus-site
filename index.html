@@ -1,0 +1,239 @@
+<title>Apparatus: A hybrid graphics editor and programming environment for creating interactive diagrams</title>
+
+<style>
+
+body {
+  font-family: helvetica;
+  font-size: 16px;
+  color: #333;
+}
+
+section {
+  max-width: 1100px;
+  margin: 20px auto;
+  overflow: hidden;
+}
+
+p {
+  line-height: 1.5;
+  max-width: 600px;
+}
+img {
+  max-width: 100%;
+}
+a {
+  text-decoration: none;
+}
+
+.Title {
+  font-size: 48px;
+  font-weight: bold;
+}
+.Description b {
+  color: #009;
+  font-style: italic;
+}
+.Launch {
+  margin-top: 30px;
+}
+.Launch a {
+  background-color: #fc0;
+  background: linear-gradient(to bottom, #fd0 0%, #fb0 100%);
+  color: #000;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 10px;
+  box-shadow: inset 0px -2px 4px rgba(0, 0, 0, 0.3), 0px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+
+h1 {
+  font-size: 30px;
+  margin: 20px 0px;
+}
+h2 {
+  font-size: 20px;
+  margin: 20px 0px 10px;
+}
+
+.Screenshot {
+  float: right;
+  width: 420px;
+  margin: 0px 20px 0px 40px;
+}
+.Screenshot img {
+  border-radius: 4px;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+  margin-bottom: 20px;
+}
+
+
+.Example {
+  float: left;
+  width: 200px;
+  margin: 0px 20px 20px 0px;
+}
+
+.ExampleAuthor {
+  color: #999;
+}
+
+
+.Javascript {
+  margin-left: 40px;
+  font-family: Menlo, monospace;
+}
+.Expression, code {
+  color: #966;
+}
+.Result {
+  color: #69c;
+}
+
+</style>
+
+
+<section>
+  <div class="Screenshot">
+    <img src="assets/screenshot.png">
+  </div>
+  <div class="Title">Apparatus</div>
+  <div class="Description">
+    <p>Apparatus is a hybrid <b>graphics editor</b> and <b>programming environment</b> for creating <b>interactive diagrams</b>.</p>
+    <p>The Apparatus Editor runs in the browser and interactive diagrams created with Apparatus can be shared and embedded on the web (coming soon).</p>
+  </div>
+  <div class="Launch">
+    <a href="editor/">Launch Apparatus</a>
+  </div>
+</section>
+
+<section>
+  <h1>Examples</h1>
+  <div class="Example">
+    <img src="assets/examples/cycloid.png">
+    <div class="ExampleTitle">Cycloid</div>
+    <div class="ExampleAuthor">Joshua Horowitz</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/pottedplant.png">
+    <div class="ExampleTitle">Potted Plant</div>
+    <div class="ExampleAuthor">Bret Victor</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/circumference.png">
+    <div class="ExampleTitle">Circumference</div>
+    <div class="ExampleAuthor">Matthias Graf</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/involute.png">
+    <div class="ExampleTitle">Involute</div>
+    <div class="ExampleAuthor">Matthias Graf</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/armlinkage.png">
+    <div class="ExampleTitle">Arm Linkage</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/polygon.png">
+    <div class="ExampleTitle">Polygon</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/slider.png">
+    <div class="ExampleTitle">Slider</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </div>
+  <div class="Example">
+    <img src="assets/examples/colorpicker.png">
+    <div class="ExampleTitle">Color Picker</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </div>
+</section>
+
+<section>
+  <h1>Video Tutorial</h1>
+
+
+  <!--
+  1. Make a Face
+    Dataflow
+    Variables
+    Interactivity
+
+  2. Make a Clock
+    Groups
+
+  3. Make a Color Picker
+    Reuse
+
+  4. Make a Bar Chart
+    Spreads
+
+  5. Make a Polygon
+    Anchors
+  -->
+
+</section>
+
+<section>
+  <h1>Documentation</h1>
+
+  <h2>Editor Interface</h2>
+  <div>
+    <img src="assets/usage.png">
+  </div>
+
+  <h2>Javascript in Expressions</h2>
+  <p>One liners will be evaluated.</p>
+  <div class="Javascript">
+    <div class="Expression">4 + 4</div>
+    <div class="Result">8</div>
+  </div>
+  <p>If you have a multi-line expression, use <code>return</code> at the end.</p>
+  <div class="Javascript">
+    <div class="Expression">
+      var x = 32;<br>
+      return x * x;
+    </div>
+    <div class="Result">1024</div>
+  </div>
+  <p>All of the javascript <code>Math</code> constants and methods are in scope.</p>
+  <div class="Javascript">
+    <div class="Expression">abs(-3) + sin(PI)</div>
+    <div class="Result">3</div>
+  </div>
+  <p>Additionally, the constant <code>TAU</code> (<code>2*PI</code>) is in scope.</p>
+  <div class="Javascript">
+    <div class="Expression">cos(TAU / 6)</div>
+    <div class="Result">0.5</div>
+  </div>
+  <p>A color utility function <code>rgba(r, g, b, a)</code> is in scope.</p>
+  <div class="Javascript">
+    <div class="Expression">rgba(1.0, 0.5, 0.5, 0.5)</div>
+    <div class="Result">"rgba(255, 128, 128, 0.5)"</div>
+  </div>
+  <p>Use <code>spread</code> to create spreads.</p>
+  <p>Create a range:</p>
+  <div class="Javascript">
+    <div class="Expression">spread(0, 5)</div>
+    <div class="Result">0, 1, 2, 3, 4</div>
+  </div>
+  <p>Create a range with an increment:</p>
+  <div class="Javascript">
+    <div class="Expression">spread(0, 5, 0.5)</div>
+    <div class="Result">0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5</div>
+  </div>
+  <p>Turn a javascript array into a spread:</p>
+  <div class="Javascript">
+    <div class="Expression">spread([0, 2, 3, 5])</div>
+    <div class="Result">0, 2, 3, 5</div>
+  </div>
+
+  <h2>Notes</h2>
+  <p>Apparatus is still an early stage project so there are likely bugs. Please report any issues on the <a href="#">Github Issues</a> page. Thanks!</p>
+  <p>Apparatus aims to support all modern browsers but has been mostly tested in Chrome.</p>
+  <p>Apparatus will auto-save your diagram. If it crashes (stops working), try refreshing and your diagram will be restored to its last working state.</p>
+</section>
+
+
