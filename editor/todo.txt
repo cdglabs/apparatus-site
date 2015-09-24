@@ -1,0 +1,142 @@
+Website
+  Layout
+    Apparatus
+    Try Apparatus
+    Source Code
+  Outline
+    Apparatus
+      Motivation
+      Examples
+      Video Introduction (from FPW videos)
+    Try Apparatus
+      Tested in Chrome.
+      Buggy, will autosave, refresh.
+      Usage image
+      Javascript in expressions
+    Source Code
+
+
+  Collect examples
+  Thumbnail/GIF examples
+  Make example loader
+
+Github
+
+
+
+Presentation
+  Make slides
+  Make video of interactive diagrams motivation
+
+
+
+
+
+
+
+Notes from microjam:
+  spread() crashes
+  click thumbnail to edit it
+  copy paste expressions (references break)
+  double click to edit attribute label
+  drop attribute feedback
+  new lines in text
+  path with line
+  any shape should be an implicit group
+  duplicate feature
+
+
+  tutorial
+    clock
+    plot sine wave
+    polygon
+    mention precision
+
+
+
+
+
+Priority Features:
+
+Arrow keys between code fields
+Import file (like load file but add it to the current toolbox)
+Create Path, Add Anchor menu items (in lieu of pen tool)
+Better naming/labeling system (Figure A, Rectangle 3, etc.)
+  Count all the Elements with the same label that are previous (in "document" order) and then number the element accordingly.
+Show "context" in attribute (element where a token came from)
+  Need to disambiguate with name clashes
+
+
+
+
+Features:
+
+Export for embedding on the web
+Pen tool
+Bezier curves
+Shadows
+Gradients
+Multiple fills and strokes
+Images
+Videos
+Constrain attributes/variables within a range
+Import JSON data
+Multitouch support
+Color picker
+Richer text support
+  Scrubbable numbers on canvas if text string is a number
+  Edit text directly on canvas (need to emulate text cursor)
+
+
+Useability:
+
+Autocomplete
+  highlight (as in hover) attribute when its selected in autocomplete menu
+  better styling for "create variable"
+  autocomplete built-in functions (sin, etc)
+  click an option to autocomplete
+Keyboard events
+  Cmd+z to undo
+  Other shortcuts based on menubar
+Create panel thumbnails should have auto view matrix
+Variable manipulation
+  Remove a variable
+  Reorder/reparent variable
+  Reset a variable/attribute (e.g. by empty string in expression)
+Better display of expression values
+  highlight the appropriate spread selection (and hover)
+  click to select that particular element
+Add thumbnails to Outline
+Resize right panel
+
+
+
+Cleanup:
+
+Integrate control points into e.g. Model.Shape
+  Smells: returning {} object, mutating it at Element and Canvas.
+Picture view
+  Need to figure out all the different thumbnail needs, then refactor
+Rename
+  Node.children -> childNodes
+  Node.childrenOfType -> childNodesVarying
+Attribute/CompiledExpression
+Build process
+  React is off on its own
+  vendor is hard-coded
+  font css is separate
+  built css has references into node_modules (for code mirror)
+Can AttributeLabel and AttributeToken be merged?
+Make consistent: first get @props, then @context in views
+Clean up Model.coffee
+Get rid of all get* methods (eliminate the get prefix)
+Get rid of Util.mouseDownPreventDefault
+DragManager.isConsummated, not consummated
+
+
+
+
+Optimizations:
+
+Get rid of try-catch for dependency management
+  Nested spreads seem to slow things down considerably. I'm not sure if it's all the nested try-catch statements or what. One way to avoid having try-catch to determine spread dependencies would be if cells manually declared their cell dependencies. That is, each cell would have a function for running it and a function that would return a list of cells it depends on. Then when you evaluate, you'd first evaluate the dependencies and if any of those were spreads you would spread the function in question.

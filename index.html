@@ -1,45 +1,66 @@
+<html>
+<head>
+<meta charset="UTF-8">
 <title>Apparatus: A hybrid graphics editor and programming environment for creating interactive diagrams</title>
 
 <style>
 
+html, body {
+  margin: 0;
+}
 body {
-  font-family: helvetica;
+  font-family: helvetica, sans-serif;
   font-size: 16px;
+  font-weight: 300;
+  color: #555;
+}
+
+.Menubar {
+  padding: 0.75em 40px;
+  margin-bottom: 40px;
+  background-color: #eee;
+}
+.Menubar a {
+  margin-right: 2em;
   color: #333;
 }
 
 section {
   max-width: 1100px;
-  margin: 20px auto;
-  overflow: hidden;
+  margin: 20px 20px 20px 40px;
+}
+section:after {
+  content:"";
+  display:table;
+  clear:both;
 }
 
 p {
-  line-height: 1.5;
-  max-width: 600px;
+  line-height: 1.4;
+  max-width: 640px;
 }
 img {
   max-width: 100%;
 }
 a {
   text-decoration: none;
+  color: #09c;
 }
 
 .Title {
   font-size: 48px;
   font-weight: bold;
+  color: #333;
 }
 .Description b {
-  color: #009;
+  color: #333;
   font-style: italic;
 }
-.Launch {
-  margin-top: 30px;
-}
 .Launch a {
+  display: inline-block;
   background-color: #fc0;
   background: linear-gradient(to bottom, #fd0 0%, #fb0 100%);
-  color: #000;
+  color: #333;
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 10px;
@@ -48,12 +69,15 @@ a {
 
 
 h1 {
-  font-size: 30px;
-  margin: 20px 0px;
+  font-size: 1.75em;
+  font-weight: 500;
+  color: #333;
 }
 h2 {
-  font-size: 20px;
-  margin: 20px 0px 10px;
+  font-size: 1.25em;
+  font-weight: 500;
+  color: #555;
+  margin: 1em 0;
 }
 
 .Screenshot {
@@ -64,7 +88,6 @@ h2 {
 .Screenshot img {
   border-radius: 4px;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
-  margin-bottom: 20px;
 }
 
 
@@ -79,21 +102,66 @@ h2 {
 }
 
 
+
+.Videolist {
+  width: 200px;
+  margin-right: 20px;
+  float: left;
+}
+.Videolist p {
+  cursor: pointer;
+  opacity: 0.5;
+}
+.Videolist p.Selected {
+  opacity: 1;
+}
+
+.Video {
+  position: relative;
+  padding-bottom: 62.5%;
+  height: 0;
+}
+.Video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+
+
+.Usage {
+  display: block;
+  margin-right: 20px;
+  margin-bottom: 2em;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.25);
+}
+
 .Javascript {
   margin-left: 40px;
   font-family: Menlo, monospace;
 }
 .Expression, code {
-  color: #966;
+  color: #B5561E;
 }
 .Result {
-  color: #69c;
+  color: #2D9A90;
 }
 
 </style>
+</head>
+<body>
 
+<div class="Menubar">
+  <a href="#examples">Examples</a>
+  <a href="#tutorials">Tutorials</a>
+  <a href="#documentation">Documentation</a>
+  <a href="#development">Development</a>
+</div>
 
-<section>
+<section id="overview">
   <div class="Screenshot">
     <img src="assets/screenshot.png">
   </div>
@@ -101,91 +169,137 @@ h2 {
   <div class="Description">
     <p>Apparatus is a hybrid <b>graphics editor</b> and <b>programming environment</b> for creating <b>interactive diagrams</b>.</p>
     <p>The Apparatus Editor runs in the browser and interactive diagrams created with Apparatus can be shared and embedded on the web (coming soon).</p>
+    <p>Apparatus is free, open-source software.</p>
   </div>
   <div class="Launch">
-    <a href="editor/">Launch Apparatus</a>
+    <a href="editor/">Launch Apparatus Editor</a>
   </div>
 </section>
 
-<section>
+<section id="examples">
   <h1>Examples</h1>
-  <div class="Example">
+  <div class="Example"><a href="editor/?load=doc/examples/Wheel%20Diagram.json">
     <img src="assets/examples/cycloid.png">
     <div class="ExampleTitle">Cycloid</div>
     <div class="ExampleAuthor">Joshua Horowitz</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Potted%20Plant.json">
     <img src="assets/examples/pottedplant.png">
     <div class="ExampleTitle">Potted Plant</div>
     <div class="ExampleAuthor">Bret Victor</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Bezier.json">
+    <img src="assets/examples/bezier.gif">
+    <div class="ExampleTitle">Quadradic Bezier</div>
+    <div class="ExampleAuthor">Matthias Graf</div>
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Circumference.json">
     <img src="assets/examples/circumference.png">
     <div class="ExampleTitle">Circumference</div>
     <div class="ExampleAuthor">Matthias Graf</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Involute.json">
     <img src="assets/examples/involute.png">
     <div class="ExampleTitle">Involute</div>
     <div class="ExampleAuthor">Matthias Graf</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Tides.json">
+    <img src="assets/examples/tides.png">
+    <div class="ExampleTitle">Tides</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Arm%20Linkage.json">
     <img src="assets/examples/armlinkage.png">
     <div class="ExampleTitle">Arm Linkage</div>
     <div class="ExampleAuthor">Toby Schachman</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Face.json">
+    <img src="assets/examples/face.png">
+    <div class="ExampleTitle">Face</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Polygon.json">
     <img src="assets/examples/polygon.png">
     <div class="ExampleTitle">Polygon</div>
     <div class="ExampleAuthor">Toby Schachman</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Star.json">
+    <img src="assets/examples/star.png">
+    <div class="ExampleTitle">Star</div>
+    <div class="ExampleAuthor">Bret Victor</div>
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Slider.json">
     <img src="assets/examples/slider.png">
     <div class="ExampleTitle">Slider</div>
     <div class="ExampleAuthor">Toby Schachman</div>
-  </div>
-  <div class="Example">
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Color%20Picker.json">
     <img src="assets/examples/colorpicker.png">
     <div class="ExampleTitle">Color Picker</div>
     <div class="ExampleAuthor">Toby Schachman</div>
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Bar%20Chart.json">
+    <img src="assets/examples/barchart.png">
+    <div class="ExampleTitle">Bar Chart</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </a></div>
+  <div class="Example"><a href="editor/?load=doc/examples/Cartesian%20Plot.json">
+    <img src="assets/examples/cartesian.png">
+    <div class="ExampleTitle">Cartesian Plot</div>
+    <div class="ExampleAuthor">Toby Schachman</div>
+  </a></div>
+
+</section>
+
+<section id="tutorials">
+  <h1>Tutorials</h1>
+
+  <div class="Videolist">
+    <p data-vimeo="140149532" class="Selected">1. Make a Face</p>
+    <p data-vimeo="140149531">2. Make a Clock</p>
+    <p data-vimeo="140149777">3. Make a Color Picker</p>
+    <p data-vimeo="140149972">4. Make a Bar Chart</p>
+    <p data-vimeo="140150120">5. Make a Plot</p>
+    <p data-vimeo="140150639">6. Make a Polygon</p>
+  </div>
+
+  <div style="margin-left: 220px; margin-right: 20px;">
+    <div class="Video">
+      <iframe id="vimeoiframe" src="https://player.vimeo.com/video/140149532" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    </div>
   </div>
 </section>
+<script>
 
-<section>
-  <h1>Video Tutorial</h1>
+var links = Array.prototype.slice.call(document.querySelectorAll("p[data-vimeo]"));
+var vimeoiframe = document.querySelector("#vimeoiframe");
+
+links.forEach(function (link) {
+  link.addEventListener("click", function () {
+    links.forEach(function (link) {
+      link.classList.remove("Selected");
+    });
+    link.classList.add("Selected");
+    vimeoid = link.getAttribute("data-vimeo");
+    vimeoiframe.setAttribute("src", "https://player.vimeo.com/video/" + vimeoid);
+  });
+  console.log(link);
+});
+
+</script>
 
 
-  <!--
-  1. Make a Face
-    Dataflow
-    Variables
-    Interactivity
 
-  2. Make a Clock
-    Groups
-
-  3. Make a Color Picker
-    Reuse
-
-  4. Make a Bar Chart
-    Spreads
-
-  5. Make a Polygon
-    Anchors
-  -->
-
-</section>
-
-<section>
+<section id="documentation">
   <h1>Documentation</h1>
 
   <h2>Editor Interface</h2>
-  <div>
+  <div class="Usage">
     <img src="assets/usage.png">
   </div>
 
   <h2>Javascript in Expressions</h2>
-  <p>One liners will be evaluated.</p>
+  <p>One-liners will be evaluated.</p>
   <div class="Javascript">
     <div class="Expression">4 + 4</div>
     <div class="Result">8</div>
@@ -231,9 +345,20 @@ h2 {
   </div>
 
   <h2>Notes</h2>
-  <p>Apparatus is still an early stage project so there are likely bugs. Please report any issues on the <a href="#">Github Issues</a> page. Thanks!</p>
+  <p>Apparatus is still an early stage project so there are likely bugs. Please report any issues on the <a href="https://github.com/cdglabs/apparatus/issues">Github Issues</a> page. Thanks!</p>
   <p>Apparatus aims to support all modern browsers but has been mostly tested in Chrome.</p>
   <p>Apparatus will auto-save your diagram. If it crashes (stops working), try refreshing and your diagram will be restored to its last working state.</p>
 </section>
 
+<section id="development">
+  <h1>Development</h1>
 
+  <p>Apparatus is under active development. Discuss how Apparatus should evolve on the <a href="https://groups.google.com/forum/#!forum/aprtus">Apparatus Google Group</a>.</p>
+
+  <p>Source code is <a href="https://github.com/cdglabs/apparatus">available on Github</a> under the MIT license. Contributions are very welcome!</p>
+
+  <p>Apparatus was originally developed by <a href="http://tobyschachman.com/">Toby Schachman</a> as a research project within the <a href="http://www.cdglabs.org/">Communications Design Group (CDG)</a> sponsored by SAP Labs. Thanks to Bret Victor, Paula Te, Matthias Graf, Michael Nagle, Chaim Gingold, Robert Ochshorn, Glen Chiacchieri, Joshua Horowitz, Ian Johnson, Simon Last, Ivan Zhao, Emily Eiffler, Vi Hart, and Monique DeSalvo for design discussions, beta testing, and encouragement!</p>
+</section>
+
+</body>
+</html>
