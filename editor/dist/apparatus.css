@@ -20,9 +20,6 @@ body {
   color: #333;
 }
 canvas {
-  position: absolute;
-  top: 0px;
-  left: 0px;
   width: 100%;
   height: 100%;
 }
@@ -39,9 +36,37 @@ canvas {
 .DragHintContainer .DragHint {
   position: absolute;
 }
-.CreatePanel {
-  box-sizing: border-box;
+.Editor {
   position: absolute;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.Center {
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+}
+.CreatePanel {
+  position: relative;
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
+  box-sizing: border-box;
   top: 0;
   left: 0;
   bottom: 0;
@@ -49,48 +74,101 @@ canvas {
   background-color: #eee;
   border-right: 1px solid #ccc;
 }
-.Outline {
+.RightPanel {
+  -webkit-flex-shrink: 0;
+      -ms-flex-negative: 0;
+          flex-shrink: 0;
   box-sizing: border-box;
+}
+.CreatePanelContainer,
+.RightPanelContainer {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.RightResize {
+  z-index: 2;
+  position: absolute;
+  width: 10px;
+  margin-left: -5px;
+  height: 100%;
+  cursor: ew-resize;
+}
+.Outline {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   position: absolute;
   top: 0;
-  right: 0;
   bottom: 50%;
-  width: 400px;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
   background-color: #fff;
   border-left: 1px solid #ccc;
 }
 .Inspector {
-  box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   position: absolute;
-  right: 0;
-  width: 400px;
+  top: 50%;
   bottom: 0;
-  height: 50%;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
   background-color: #fff;
   border-left: 1px solid #ccc;
 }
 .Canvas {
   box-sizing: border-box;
+  -webkit-box-flex: 2;
+  -webkit-flex-grow: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+  position: relative;
+}
+.Canvas canvas {
   position: absolute;
-  left: 120px;
-  top: 24px;
-  right: 400px;
-  bottom: 0;
+}
+.LayoutMode {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  border: 1px solid #ccc;
+  width: 20px;
+  height: 20px;
+  right: 3px;
+  top: -22px;
+  box-sizing: border-box;
+  background-color: #eee;
+  background-size: 16px 16px;
+  background-position: 1px 1px;
+  background-repeat: no-repeat;
+  text-align: center;
+  font-size: 16px;
+}
+.LayoutMode.FullScreen {
+  top: 2px;
 }
 .Menubar {
   box-sizing: border-box;
-  position: absolute;
   height: 24px;
-  left: 120px;
-  right: 400px;
   background-color: #eee;
-  top: 0;
   border-bottom: 1px #ccc solid;
 }
 .Header {
-  position: absolute;
   width: 100%;
-  top: 0px;
   height: 18px;
   box-sizing: border-box;
   line-height: 16px;
@@ -104,10 +182,8 @@ canvas {
   border-bottom: 1px solid #d3d3d3;
 }
 .Scroller {
-  position: absolute;
   width: 100%;
-  top: 18px;
-  bottom: 0px;
+  height: calc(100% - 18px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -151,13 +227,12 @@ canvas {
   height: 100%;
 }
 .CreatePanelItem {
-  padding: 6px 6px 18px 6px;
   position: relative;
+  padding: 6px 6px 18px 6px;
 }
 .CreatePanelItem .CreatePanelThumbnail {
   cursor: -webkit-grab;
   cursor: grab;
-  position: relative;
   width: 108px;
   height: 108px;
   background-color: #fff;

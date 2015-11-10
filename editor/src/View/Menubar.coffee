@@ -13,7 +13,10 @@ R.create "Menubar",
     {editor, project} = @context
     isSelection = project.selectedParticularElement?
 
-    R.div {className: "Menubar"},
+    if editor.layout.fullScreen
+      return null
+
+    R.div { className: "Menubar" },
       R.MenubarItem {title: "New", isDisabled: false, fn: @_new}
       R.MenubarItem {title: "Load", isDisabled: false, fn: @_load}
       R.MenubarItem {title: "Save", isDisabled: false, fn: @_save}
@@ -31,10 +34,32 @@ R.create "Menubar",
       R.MenubarItem {title: "Create Symbol", isDisabled: !isSelection, fn: @_createSymbolFromSelectedElement}
 
   componentDidMount: ->
+    key "command+o, ctrl+o", (e) =>
+      e.preventDefault()
+      @_load()
+
+    key "command+s, ctrl+s", (e) =>
+      e.preventDefault()
+      @_save()
+
+    key "command+z, ctrl+z", (e) =>
+      e.preventDefault()
+      @_undo()
+
+    key "command+shift+z, ctrl+y", (e) =>
+      e.preventDefault()
+      @_redo()
+
     key "backspace", (e) =>
+      # We need to check that we're not editing text, since in this case
+      # pressing the backspace key should backspace a letter.
       return if Util.textFocus()
       e.preventDefault()
       @_removeSelectedElement()
+
+    key "command+g, ctrl+g", (e) =>
+      e.preventDefault()
+      @_groupSelectedElement()
 
   _new: ->
     {editor} = @context

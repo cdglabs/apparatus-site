@@ -8,10 +8,14 @@ Storage = require "../Storage/Storage"
 
 module.exports = class Editor
   constructor: ->
+    @_setupLayout()
     @_setupSerializer()
     @_setupProject()
     @_setupRevision()
     @_parseQueryString()
+
+  _setupLayout: ->
+    @layout = new Model.Layout()
 
   _setupProject: ->
     @loadFromLocalStorage()
@@ -46,11 +50,13 @@ module.exports = class Editor
     return builtIn
 
   # TODO: get version via build process / ENV variable?
-  version: "0.4.0"
+  version: "0.4.1"
 
   load: (jsonString) ->
     json = JSON.parse(jsonString)
-    if json.type == "Apparatus" and json.version == @version
+    # TODO: If the file format changes, this will need to check the version
+    # and convert or fail appropriately.
+    if json.type == "Apparatus"
       @project = @serializer.dejsonify(json)
 
   save: ->
@@ -158,10 +164,3 @@ module.exports = class Editor
 
   isRedoable: ->
     return @redoStack.length > 0
-
-
-
-
-
-
-
