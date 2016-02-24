@@ -315,7 +315,6 @@ canvas {
 }
 .DisclosureTriangle.isExpanded {
   -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
           transform: rotate(90deg);
 }
 .DisclosureTriangle.Hidden {
@@ -440,7 +439,7 @@ canvas {
 .ReferenceToken {
   border-radius: 20px;
   padding: 0 0.75em;
-  white-space: nowrap;
+  display: inline-block;
 }
 .SpreadValue:before {
   content: "[";

@@ -4,6 +4,7 @@ Dataflow = require "../Dataflow/Dataflow"
 Model = require "./Model"
 Util = require "../Util/Util"
 Storage = require "../Storage/Storage"
+FirebaseAccess = require "../Storage/FirebaseAccess"
 
 
 module.exports = class Editor
@@ -35,8 +36,12 @@ module.exports = class Editor
   # (the ?stuff at the end of the URL).
   _parseQueryString: ->
     parsed = queryString.parse(location.search)
+    if parsed.experimental == '1'
+      @experimental = true
     if parsed.load
       @loadFromURL(parsed.load)
+    else if parsed.loadFirebase
+      @loadFromFirebase(parsed.loadFirebase)
 
   # builtIn returns all of the built in classes and objects that are used as
   # the "anchors" for serialization and deserialization. That is, all of the
@@ -52,14 +57,19 @@ module.exports = class Editor
   # TODO: get version via build process / ENV variable?
   version: "0.4.1"
 
-  load: (jsonString) ->
+  loadJsonStringIntoProject: (jsonString) ->
     json = JSON.parse(jsonString)
     # TODO: If the file format changes, this will need to check the version
     # and convert or fail appropriately.
     if json.type == "Apparatus"
       @project = @serializer.dejsonify(json)
 
-  save: ->
+  loadJsonStringIntoProjectFromExternalSource: (jsonString) ->
+    @loadJsonStringIntoProject(jsonString)
+    @checkpoint()
+    Apparatus.refresh()  # HACK: calling Apparatus seems funky here.
+
+  getJsonStringOfProject: ->
     json = @serializer.jsonify(@project)
     json.type = "Apparatus"
     json.version = @version
@@ -77,14 +87,14 @@ module.exports = class Editor
   localStorageName: "apparatus"
 
   saveToLocalStorage: ->
-    jsonString = @save()
+    jsonString = @getJsonStringOfProject()
     window.localStorage[@localStorageName] = jsonString
     return jsonString
 
   loadFromLocalStorage: ->
     jsonString = window.localStorage[@localStorageName]
     if jsonString
-      @load(jsonString)
+      @loadJsonStringIntoProject(jsonString)
 
   resetLocalStorage: ->
     delete window.localStorage[@localStorageName]
@@ -95,13 +105,13 @@ module.exports = class Editor
   # ===========================================================================
 
   saveToFile: ->
-    jsonString = @save()
+    jsonString = @getJsonStringOfProject()
     fileName = @project.editingElement.label + ".json"
     Storage.saveFile(jsonString, fileName, "application/json;charset=utf-8")
 
   loadFromFile: ->
     Storage.loadFile (jsonString) =>
-      @load(jsonString)
+      @loadJsonStringIntoProjectFromExternalSource(jsonString)
 
 
   # ===========================================================================
@@ -117,11 +127,36 @@ module.exports = class Editor
       return unless xhr.readyState == 4
       return unless xhr.status == 200
       jsonString = xhr.responseText
-      @load(jsonString)
-      @checkpoint()
-      Apparatus.refresh() # HACK: calling Apparatus seems funky here.
+      @loadJsonStringIntoProjectFromExternalSource(jsonString)
     xhr.open("GET", url, true)
     xhr.send()
+
+  loadFromFirebase: (key) ->
+    @firebaseAccess ?= new FirebaseAccess()
+
+    @firebaseAccess.loadDrawingPromise(key)
+      .then (drawingData) =>
+        jsonString = drawingData.source
+        @loadJsonStringIntoProjectFromExternalSource(jsonString)
+      .catch (error) =>
+        if error instanceof FirebaseAccess.DrawingNotFoundError
+          console.warn "Drawing #{key} not found in Firebase!"
+        else
+          throw error
+      .done()
+
+  saveToFirebase: ->
+    @firebaseAccess ?= new FirebaseAccess()
+
+    jsonString = @getJsonStringOfProject()
+    @firebaseAccess.saveDrawingPromise(jsonString)
+      .then (key) ->
+        window.prompt(
+          'Saved successfully! Copy this link:',
+          # TODO: Remove experimental=1 when Firebase access is taken out of
+          # experimental mode
+          'http://aprt.us/editor/?experimental=1&loadFirebase=' + key)
+      .done()
 
 
   # ===========================================================================
@@ -131,7 +166,7 @@ module.exports = class Editor
   _setupRevision: ->
     # @current is a JSON string representing the current state. @undoStack and
     # @redoStack are arrays of such JSON strings.
-    @current = @save()
+    @current = @getJsonStringOfProject()
     @undoStack = []
     @redoStack = []
     @maxUndoStackSize = 100
@@ -149,14 +184,14 @@ module.exports = class Editor
     return unless @isUndoable()
     @redoStack.push(@current)
     @current = @undoStack.pop()
-    @load(@current)
+    @loadJsonStringIntoProject(@current)
     @saveToLocalStorage()
 
   redo: ->
     return unless @isRedoable()
     @undoStack.push(@current)
     @current = @redoStack.pop()
-    @load(@current)
+    @loadJsonStringIntoProject(@current)
     @saveToLocalStorage()
 
   isUndoable: ->

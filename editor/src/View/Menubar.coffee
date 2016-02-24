@@ -20,6 +20,8 @@ R.create "Menubar",
       R.MenubarItem {title: "New", isDisabled: false, fn: @_new}
       R.MenubarItem {title: "Load", isDisabled: false, fn: @_load}
       R.MenubarItem {title: "Save", isDisabled: false, fn: @_save}
+      if editor.experimental
+        R.MenubarItem {title: "Share", isDisabled: false, fn: @_share}
 
       R.div {className: "MenubarSeparator"}
 
@@ -32,6 +34,14 @@ R.create "Menubar",
       R.MenubarItem {title: "Group", isDisabled: !isSelection, fn: @_groupSelectedElement}
       # R.MenubarItem {title: "Duplicate", isDisabled: !isSelection, fn: @_duplicateSelectedElement}
       R.MenubarItem {title: "Create Symbol", isDisabled: !isSelection, fn: @_createSymbolFromSelectedElement}
+
+      if editor.experimental
+        [
+          R.div {className: "MenubarSeparator"}
+          R.div {className: "MenubarSeparator"}
+
+          R.div {style: {color: "red"}}, "Experimental mode is on"
+        ]
 
   componentDidMount: ->
     key "command+o, ctrl+o", (e) =>
@@ -72,6 +82,10 @@ R.create "Menubar",
   _save: ->
     {editor} = @context
     editor.saveToFile()
+
+  _share: ->
+    {editor} = @context
+    editor.saveToFirebase()
 
   _undo: ->
     {editor} = @context
