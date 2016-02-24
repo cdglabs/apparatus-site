@@ -18438,7 +18438,8 @@ Attribute.CircularReferenceError = CircularReferenceError = (function(superClass
 
 },{"../Dataflow/Dataflow":12,"../Evaluator/Evaluator":16,"../Util/Util":34,"./Link":24,"./Model":25,"./Node":26,"underscore":"underscore"}],21:[function(require,module,exports){
 var Dataflow, Editor, FirebaseAccess, Model, Storage, Util, _, queryString,
-  hasProp = {}.hasOwnProperty;
+  hasProp = {}.hasOwnProperty,
+  indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
 _ = require("underscore");
 
@@ -18527,6 +18528,31 @@ module.exports = Editor = (function() {
     return Apparatus.refresh();
   };
 
+  Editor.prototype.mergeJsonStringIntoProject = function(jsonString) {
+    var createPanelElement, i, json, len, otherProject, ref, results;
+    json = JSON.parse(jsonString);
+    if (json.type === "Apparatus") {
+      otherProject = this.serializer.dejsonify(json);
+      ref = otherProject.createPanelElements;
+      results = [];
+      for (i = 0, len = ref.length; i < len; i++) {
+        createPanelElement = ref[i];
+        if (indexOf.call(this.project.createPanelElements, createPanelElement) < 0) {
+          results.push(this.project.createPanelElements.push(createPanelElement));
+        } else {
+          results.push(void 0);
+        }
+      }
+      return results;
+    }
+  };
+
+  Editor.prototype.mergeJsonStringIntoProjectFromExternalSource = function(jsonString) {
+    this.mergeJsonStringIntoProject(jsonString);
+    this.checkpoint();
+    return Apparatus.refresh();
+  };
+
   Editor.prototype.getJsonStringOfProject = function() {
     var json, jsonString;
     json = this.serializer.jsonify(this.project);
@@ -18572,6 +18598,14 @@ module.exports = Editor = (function() {
     return Storage.loadFile((function(_this) {
       return function(jsonString) {
         return _this.loadJsonStringIntoProjectFromExternalSource(jsonString);
+      };
+    })(this));
+  };
+
+  Editor.prototype.mergeFromFile = function() {
+    return Storage.loadFile((function(_this) {
+      return function(jsonString) {
+        return _this.mergeJsonStringIntoProjectFromExternalSource(jsonString);
       };
     })(this));
   };
@@ -22199,7 +22233,11 @@ R.create("Menubar", {
       title: "Load",
       isDisabled: false,
       fn: this._load
-    }), R.MenubarItem({
+    }), editor.experimental ? R.MenubarItem({
+      title: "Merge",
+      isDisabled: false,
+      fn: this._merge
+    }) : void 0, R.MenubarItem({
       title: "Save",
       isDisabled: false,
       fn: this._save
@@ -22293,6 +22331,11 @@ R.create("Menubar", {
     var editor;
     editor = this.context.editor;
     return editor.loadFromFile();
+  },
+  _merge: function() {
+    var editor;
+    editor = this.context.editor;
+    return editor.mergeFromFile();
   },
   _save: function() {
     var editor;
